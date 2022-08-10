@@ -30,7 +30,8 @@ app.post("/login", (req, res) => {
     })
     .catch(console.error);
 });
-
+ 
+//maintain the user session and fetches new expires_in value. gives us a resfreshToken from the front end.;
 app.post("/refresh", (req, res) => {
   const { refreshToken } = req.body;
   const spotifyApi = new SpotifyWebApi({
@@ -40,6 +41,7 @@ app.post("/refresh", (req, res) => {
     refreshToken,
   });
 
+  //calling this function will get a new access token and new expires_in value.
   spotifyApi
     .refreshAccessToken()
     .then(({ body: { access_token, expires_in } }) => {
@@ -48,6 +50,7 @@ app.post("/refresh", (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// using lyrics-finder package to find the lyrics of the song. 
 app.get("/lyrics", (req, res, next) => {
   const { artist, track } = req.query;
   lyricsFinder(artist, track)
