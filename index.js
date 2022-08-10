@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: true }))
 
 const PORT = 5050
 
+// check if user log in is correct, get code from the front end which is uniqe for the user. SpotifyWebApi we get from the spotifi-web-api-node package. redirectUri, clientId, and clientsecrets are the same as the spotify developer website. 
 app.post("/login", (req, res) => {
     const { code } = req.body
     const spotifyApi = new SpotifyWebApi({
@@ -21,6 +22,7 @@ app.post("/login", (req, res) => {
       clientSecret: process.env.CLIENT_SECRET,
     })
   
+    // get the access, refresh, and expires token which we will use in the front end.
     spotifyApi
       .authorizationCodeGrant(code)
       .then(({ body: { access_token, refresh_token, expires_in } }) => {
